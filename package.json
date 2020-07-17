@@ -1,0 +1,15 @@
+{
+    "name": "Hola Mundo",
+    "description": "holamundo",
+    "version": "0.0.1",
+    "private": true,
+    "license": "MIT",
+    "author": "My name",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "osmosis": "^1.1.10",
+        "twilio": "^3.48.0"
+    }
+}
