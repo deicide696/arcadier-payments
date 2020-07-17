@@ -1,10 +1,10 @@
 {
-    "name": "Hola Mundo",
-    "description": "holamundo",
+    "name": "Ziembra API",
+    "description": "Core - Ziembra",
     "version": "0.0.1",
     "private": true,
     "license": "MIT",
-    "author": "My name",
+    "author": "Camilo Pinilla",
     "scripts": {
         "start": "node index.js"
     },
