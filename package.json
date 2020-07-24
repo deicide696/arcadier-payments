@@ -6,10 +6,15 @@
     "license": "MIT",
     "author": "Camilo Pinilla",
     "scripts": {
+        "setup": "SET DEBUG=dev.ziembra:* node setup.js",
         "start": "node index.js"
     },
     "dependencies": {
+        "debug": "^4.1.1",
+        "dotenv": "^8.2.0",
+        "nexmo": "^2.8.0",
         "osmosis": "^1.1.10",
-        "twilio": "^3.48.0"
+        "sequelize": "^6.3.3",
+        "sqlite3": "^5.0.0"
     }
 }
