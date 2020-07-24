@@ -16,5 +16,8 @@
         "osmosis": "^1.1.10",
         "sequelize": "^6.3.3",
         "sqlite3": "^5.0.0"
+    },
+    "engines": {
+        "node": "12.16.3"
     }
 }

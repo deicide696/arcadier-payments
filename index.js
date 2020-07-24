@@ -85,12 +85,9 @@ var server = http.createServer(function(request, response) {
         });
     });
 
+    var result = async () => Product.findOne({ where: { name: "Guanabana" } });
 
-
-
-
-
-
+    result().then(resp => console.log(resp.name))
 
 
 
