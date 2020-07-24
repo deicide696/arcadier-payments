@@ -2,131 +2,164 @@
 require('dotenv').config();
 
 var http = require('http');
+
+var express = require('express');
+var app = express();
+
+const bodyParser = require('body-parser');
+
 const osmosis = require('osmosis');
 const Nexmo = require('nexmo');
 
 const Sequelize = require('sequelize');
 
-var server = http.createServer(function(request, response) {
 
-    const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
-        host: process.env.DB_HOST,
-        dialect: 'sqlite',
-        logging: false,
-        storage: process.env.DB_STORAGE,
-    });
+app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
-    // TODO: Pendiente de remover createdAt y updatedAt
-    const Customer = sequelize.define('customer', {
-        name: {
-            type: Sequelize.STRING
-        },
-        email: {
-            type: Sequelize.STRING
-        },
-        phone: {
-            type: Sequelize.STRING
-        }
-    });
-
-      
-    const Product = sequelize.define('product', {
-        name: {
-            type: Sequelize.STRING
-        },
-        corabastos_code: {
-            type: Sequelize.INTEGER
-        }
-    });
-      
-    // const Task = sequelize.define('task', {
-    //     name: {
-    //         type: Sequelize.STRING,
-    //         allowNull: false
-    //     },
-    //     description: Sequelize.TEXT,
-    //     status: {
-    //         type: Sequelize.STRING,
-    //         defaultValue: 'pendiente',
-    //         allowNull: false,
-    //     },
-    //     deadline: Sequelize.DATE
-    // });
-      
-    Customer.belongsTo(Product)
-
-//     sequelize.authenticate()
-//     .then(() => {
-//         console.log('Conectado')
-//     })
-//     .catch(err => {
-//         console.log('No se conecto')
-//     })
+app.post('/add-customer', function (req, res) {
+    console.log('data: ', req.body.name);
+    res.send('<h1>'+req.body.username+'</h1>');
+});
 
 
+app.get('/', function (req, res) {
+    // res.send('Hello World!');
+});
 
+var port = process.env.PORT || 8080;
 
-    Customer.sync()
-
-    // DROP TABLE IF EXISTS `products` (force: true)
-    Product.sync({force: true}).then(function () {
-        
-        // Crea los equipos al iniciar la creación de la tabla
-        Product.create({
-            name: 'Papaya maradol'
-        });
-
-        Product.create({
-            name: 'Mango Tommy'
-        });
-
-        Product.create({
-            name: 'Guanabana'
-        });
-    });
-
-    var result = async () => Product.findOne({ where: { name: "Guanabana" } });
-
-    result().then(resp => console.log(resp.name))
+app.listen(port, function () {
+    console.log("Server running at http://localhost:%d", port)
+});
 
 
 
 
 
 
+// var server = http.createServer(function(request, response) {
 
+//     // Serve static files from directory 'public'
+//     app.use(express.static('public'));
 
-
-
-
-
-
-
-//     let price = "";
-
-//     const nexmo = new Nexmo({
-//         apiKey: '3423ae0e',
-//         apiSecret: '3rnBo3WkeURTG5KT',
+//     const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+//         host: process.env.DB_HOST,
+//         dialect: 'sqlite',
+//         logging: false,
+//         storage: process.env.DB_STORAGE,
 //     });
 
-//     response.writeHead(200, {"Content-Type": "text/plain"});
+//     // TODO: Pendiente de remover createdAt y updatedAt
+//     const Customer = sequelize.define('customer', {
+//         name: {
+//             type: Sequelize.STRING
+//         },
+//         email: {
+//             type: Sequelize.STRING
+//         },
+//         phone: {
+//             type: Sequelize.STRING
+//         }
+//     });
 
-//     osmosis
-//         .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-16&d=ok&l=')
-//         .find('tbody')
-//         .set({'product': ['tr']})
-//         .data(function(listing) {
+      
+//     const Product = sequelize.define('product', {
+//         name: {
+//             type: Sequelize.STRING
+//         },
+//         corabastos_code: {
+//             type: Sequelize.INTEGER
+//         }
+//     });
+      
+//     // const Task = sequelize.define('task', {
+//     //     name: {
+//     //         type: Sequelize.STRING,
+//     //         allowNull: false
+//     //     },
+//     //     description: Sequelize.TEXT,
+//     //     status: {
+//     //         type: Sequelize.STRING,
+//     //         defaultValue: 'pendiente',
+//     //         allowNull: false,
+//     //     },
+//     //     deadline: Sequelize.DATE
+//     // });
+      
+//     Customer.belongsTo(Product)
 
-//             console.log(listing.product[0])
+// //     sequelize.authenticate()
+// //     .then(() => {
+// //         console.log('Conectado')
+// //     })
+// //     .catch(err => {
+// //         console.log('No se conecto')
+// //     })
 
-//             price = listing.product[0].slice(49,54)
-//             console.log(price)
+
+
+
+//     Customer.sync()
+
+//     // DROP TABLE IF EXISTS `products` (force: true)
+//     Product.sync({force: true}).then(function () {
         
-//             nexmo.message.sendSms('Ziembra Inc.', '573204511163', 'Hola Cristhian, el precio de la papaya maradol para hoy es $' + price);
-//         })
-//         .log(console.log)
-//         .error(console.log)
-//         .debug(console.log)
+//         // Crea los equipos al iniciar la creación de la tabla
+//         Product.create({
+//             name: 'Papaya maradol'
+//         });
+
+//         Product.create({
+//             name: 'Mango Tommy'
+//         });
+
+//         Product.create({
+//             name: 'Guanabana'
+//         });
+//     });
+
+//     var result = async () => Product.findOne({ where: { name: "Guanabana" } });
+
+//     result().then(resp => console.log(resp.name))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// //     let price = "";
+
+// //     const nexmo = new Nexmo({
+// //         apiKey: '3423ae0e',
+// //         apiSecret: '3rnBo3WkeURTG5KT',
+// //     });
+
+// //     response.writeHead(200, {"Content-Type": "text/plain"});
+
+// //     osmosis
+// //         .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-16&d=ok&l=')
+// //         .find('tbody')
+// //         .set({'product': ['tr']})
+// //         .data(function(listing) {
+
+// //             console.log(listing.product[0])
+
+// //             price = listing.product[0].slice(49,54)
+// //             console.log(price)
+        
+// //             nexmo.message.sendSms('Ziembra Inc.', '573204511163', 'Hola Cristhian, el precio de la papaya maradol para hoy es $' + price);
+// //         })
+// //         .log(console.log)
+// //         .error(console.log)
+// //         .debug(console.log)
     
 
 
@@ -144,40 +177,40 @@ var server = http.createServer(function(request, response) {
 
 
 
-//     // osmosis
-//     //     .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204604&d=ok&f=2020-07-16&d=ok&l=')
-//     //     .find('tbody')
-//     //     .set({'product': ['tr']})
-//     //     .data(function(listing) {
+// //     // osmosis
+// //     //     .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204604&d=ok&f=2020-07-16&d=ok&l=')
+// //     //     .find('tbody')
+// //     //     .set({'product': ['tr']})
+// //     //     .data(function(listing) {
 
-//     //         console.log(listing.product[0])
+// //     //         console.log(listing.product[0])
 
-//     //         price = listing.product[0].slice(62,67)
-//     //         console.log(price)
+// //     //         price = listing.product[0].slice(62,67)
+// //     //         console.log(price)
 
-//     //     })
-//     //     .log(console.log)
-//     //     .error(console.log)
-//     //     .debug(console.log)
+// //     //     })
+// //     //     .log(console.log)
+// //     //     .error(console.log)
+// //     //     .debug(console.log)
 
 
-//     // osmosis
-//     //     .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=203600&d=ok&f=2020-07-16&d=ok&l=')
-//     //     .find('tbody')
-//     //     .set({'product': ['tr']})
-//     //     .data(function(listing) {
+// //     // osmosis
+// //     //     .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=203600&d=ok&f=2020-07-16&d=ok&l=')
+// //     //     .find('tbody')
+// //     //     .set({'product': ['tr']})
+// //     //     .data(function(listing) {
 
-//     //         console.log(listing.product[0])
+// //     //         console.log(listing.product[0])
 
-//     //         price = listing.product[0].slice(46,51)
-//     //         console.log(price)
+// //     //         price = listing.product[0].slice(46,51)
+// //     //         console.log(price)
 
-//     //     })
-//     //     .log(console.log)
-//     //     .error(console.log)
-//     //     .debug(console.log)
-});
+// //     //     })
+// //     //     .log(console.log)
+// //     //     .error(console.log)
+// //     //     .debug(console.log)
+// });
 
-var port = process.env.PORT || 8080;
-server.listen(port);
-console.log("Server running at http://localhost:%d", port)
+// var port = process.env.PORT || 8080;
+// server.listen(port);
+// console.log("Server running at http://localhost:%d", port)
