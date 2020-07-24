@@ -13,17 +13,91 @@ const Nexmo = require('nexmo');
 
 const Sequelize = require('sequelize');
 
-
 app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
-app.post('/add-customer', function (req, res) {
-    console.log('data: ', req.body.name);
-    res.send('<h1>'+req.body.username+'</h1>');
+const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
+    host: process.env.DB_HOST,
+    dialect: 'sqlite',
+    logging: false,
+    storage: process.env.DB_STORAGE,
 });
 
+// TODO: Pendiente de remover createdAt y updatedAt
+const Customer = sequelize.define('customer', {
+    name: {
+        type: Sequelize.STRING
+    },
+    email: {
+        type: Sequelize.STRING
+    },
+    phone: {
+        type: Sequelize.STRING
+    }
+});
 
-app.get('/', function (req, res) {
-    // res.send('Hello World!');
+const Product = sequelize.define('product', {
+    name: {
+        type: Sequelize.STRING
+    },
+    corabastos_code: {
+        type: Sequelize.INTEGER
+    }
+});
+    
+Customer.belongsTo(Product)
+
+Customer.sync()
+
+// DROP TABLE IF EXISTS `products` (force: true)
+Product.sync({force: true}).then(function () {
+    
+    // Crea los equipos al iniciar la creación de la tabla
+    Product.create({
+        name: 'Papaya maradol'
+    });
+
+    Product.create({
+        name: 'Mango Tommy'
+    });
+
+    Product.create({
+        name: 'Guanabana'
+    });
+});
+
+var result = async () => Product.findOne({ where: { name: 'Guanabana' } });
+
+//DEBUG
+result().then(resp => console.log(resp.name))
+
+app.post('/suscribe-product-price', function (req, res) {
+    console.log('data: ', req.body.name);
+
+    let price = "";
+
+    const nexmo = new Nexmo({
+        apiKey: '3423ae0e',
+        apiSecret: '3rnBo3WkeURTG5KT',
+    });
+
+    osmosis
+        .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-16&d=ok&l=')
+        .find('tbody')
+        .set({'product': ['tr']})
+        .data(function(listing) {
+
+            console.log(listing.product[0])
+
+            price = listing.product[0].slice(49,54)
+            console.log(price)
+        
+            nexmo.message.sendSms('Ziembra Inc.', '573204511163', 'Hola Cristhian, el precio de la papaya maradol para hoy es $' + price);
+        })
+        .log(console.log)
+        .error(console.log)
+        .debug(console.log)
+
+    res.send('<h1>'+req.body.name+'</h1>');
 });
 
 var port = process.env.PORT || 8080;
