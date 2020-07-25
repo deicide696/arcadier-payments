@@ -77,53 +77,81 @@ app.post('/suscribe-product-price', function (req, res) {
     findCustomer().then(resp => {
         console.log(resp)
 
-        if(!resp) {
-        
+        if(resp === null) {
+            console.log(req.body.productid)
+            try {
+                var createCustomer = async () => Customer.create({
+                    name: req.body.name,
+                    phone: req.body.phone,
+                    productId: req.body.productid                     
+                });
+                
+                createCustomer().then(resp => {
+
+                    console.log(`User added.`)
+
+                    let price = "";
+
+                    osmosis
+                        .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-25&d=ok&l=')
+                        .find('tbody')
+                        .set({'product': ['tr']})
+                        .data(function(listing) {
+                            var requestSms = {
+                                'account': 10019189,
+                                'apiKey': 'c1vdJfdQnzfe9rTyLkfmRaJRkMjmmN',
+                                'token': 'b6d67aded0fbccf4888ccf0385ed5aac',
+                                'toNumber': req.body.phone,
+                                'sms': null
+                        }
+                
+                        let htmlPrice = listing.product[0];
+                
+                        var splitToPrice = htmlPrice.split("$"); 
+                        
+                
+                        requestSms.sms = `Hola ${req.body.name}, el precio de la papaya maradol para hoy es de: ${splitToPrice[1]}`;
+                
+                        try {
+                            let sendMessage = superagent
+                            .post('https://api101.hablame.co/api/sms/v2.1/send/')
+                            .type('form')
+                            .send(requestSms)
+                            .end((error, response) => {
+                                
+                                return res.send({success: true, message: 'Recibiras en unos momentos el precio!'});
+                            });
+                        }
+                        catch (err) {
+                            console.error(err);
+                        }
+                    
+                    })
+                    .log(
+                        // console.log
+                    )
+                    .error(
+                        // console.log
+                    )
+                    .debug(
+                        // console.log
+                    )
+                })                
+            }
+
+            catch (e) {
+
+                if (e.name === 'SequelizeUniqueConstraintError') {
+                    console.log('That user already exists.')
+                }
+
+                console.log('Something went wrong with adding a user.');
+            }
         }
         else {
-            console.log('Else!!!')
+
         }
     })
-
-    let price = "";
-
-    osmosis
-        .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-25&d=ok&l=')
-        .find('tbody')
-        .set({'product': ['tr']})
-        .data(function(listing) {
-            var requestSms = {
-                'account': 10019189,
-                'apiKey': 'c1vdJfdQnzfe9rTyLkfmRaJRkMjmmN',
-                'token': 'b6d67aded0fbccf4888ccf0385ed5aac',
-                'toNumber': req.body.phone,
-                'sms': null
-        }
-
-        let htmlPrice = listing.product[0];
-
-        var splitToPrice = htmlPrice.split("$"); 
-        
-
-        requestSms.sms = `Hola Andrés, el precio del mango tommy para hoy es de: ${splitToPrice[1]}`;
-
-        try {
-            let res = superagent
-            .post('https://api101.hablame.co/api/sms/v2.1/send/')
-            .type('form')
-            .send(requestSms)
-            .end((err, res) => {
-                // console.log(res);
-            });
-        }
-        catch (err) {
-            console.error(err);
-        }
-    
-    })
-    .log(console.log)
-    .error(console.log)
-    .debug(console.log)
 });
 
 var port = process.env.PORT || 8080;
