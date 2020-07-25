@@ -1,10 +1,6 @@
 'use strict'
 require('dotenv').config();
 
-var should = require('should');
-
-(5).should.be.exactly(5).and.be.a.Number;
-
 var http = require('http');
 
 var express = require('express');
@@ -82,7 +78,7 @@ app.post('/suscribe-product-price', function (req, res) {
         console.log(resp)
 
         if(!resp) {
-            
+        
         }
         else {
             console.log('Else!!!')
