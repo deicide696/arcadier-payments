@@ -33,9 +33,6 @@ const Customer = sequelize.define('customer', {
     name: {
         type: Sequelize.STRING
     },
-    email: {
-        type: Sequelize.STRING
-    },
     phone: {
         type: Sequelize.STRING
     }
@@ -71,19 +68,31 @@ Product.sync({force: true}).then(function () {
     });
 });
 
-var result = async () => Product.findOne({ where: { name: 'Guanabana' } });
+// var result = async () => Product.findOne({ where: { name: 'Guanabana' } });
 
 
 //DEBUG
-result().then(resp => console.log(resp.name))
+// result().then(resp => console.log(resp.name))
 
 app.post('/suscribe-product-price', function (req, res) {
-    console.log('data: ', req.body.name);
     
+    var findCustomer = async () => Customer.findOne({ where: { phone: req.body.phone } });
+
+    findCustomer().then(resp => {
+        console.log(resp)
+
+        if(!resp) {
+            
+        }
+        else {
+            console.log('Else!!!')
+        }
+    })
+
     let price = "";
 
     osmosis
-        .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-24&d=ok&l=')
+        .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-25&d=ok&l=')
         .find('tbody')
         .set({'product': ['tr']})
         .data(function(listing) {
@@ -91,17 +100,14 @@ app.post('/suscribe-product-price', function (req, res) {
                 'account': 10019189,
                 'apiKey': 'c1vdJfdQnzfe9rTyLkfmRaJRkMjmmN',
                 'token': 'b6d67aded0fbccf4888ccf0385ed5aac',
-                'toNumber': '3133118134',
+                'toNumber': req.body.phone,
                 'sms': null
         }
 
         let htmlPrice = listing.product[0];
 
-        console.log(htmlPrice)
-
         var splitToPrice = htmlPrice.split("$"); 
         
-        console.log(splitToPrice[1]); 
 
         requestSms.sms = `Hola Andrés, el precio del mango tommy para hoy es de: ${splitToPrice[1]}`;
 
@@ -111,7 +117,7 @@ app.post('/suscribe-product-price', function (req, res) {
             .type('form')
             .send(requestSms)
             .end((err, res) => {
-                console.log(res);
+                // console.log(res);
             });
         }
         catch (err) {
