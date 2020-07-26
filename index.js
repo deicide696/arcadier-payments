@@ -19,9 +19,7 @@ app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dir
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
-    dialect: 'sqlite',
-    logging: false,
-    storage: process.env.DB_STORAGE,
+    dialect: 'mysql'
 });
 
 // TODO: Pendiente de remover createdAt y updatedAt
@@ -31,6 +29,9 @@ const Customer = sequelize.define('customer', {
     },
     phone: {
         type: Sequelize.STRING
+    },
+    productId: {
+        type: Sequelize.INTEGER
     }
 });
 
@@ -38,12 +39,12 @@ const Product = sequelize.define('product', {
     name: {
         type: Sequelize.STRING
     },
-    corabastos_code: {
+    corabastosCode: {
         type: Sequelize.INTEGER
     }
 });
     
-Customer.belongsTo(Product)
+// Customer.belongsTo(Product)
 
 Customer.sync()
 
