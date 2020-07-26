@@ -65,8 +65,6 @@ Product.sync({force: true}).then(function () {
     });
 });
 
-// var result = async () => Product.findOne({ where: { name: 'Guanabana' } });
-
 
 //DEBUG
 // result().then(resp => console.log(resp.name))
