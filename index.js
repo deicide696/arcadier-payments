@@ -1,24 +1,20 @@
 'use strict'
 require('dotenv').config();
 
-var http = require('http');
-var sslRedirect = require('heroku-ssl-redirect');
-
 var express = require('express');
 var app = express();
+var enforce = require('express-sslify');
+
+// Enable SSL redirect
+app.use(enforce.HTTPS());
 
 const bodyParser = require('body-parser');
 
 const osmosis = require('osmosis');
-const Nexmo = require('nexmo');
 
 const Sequelize = require('sequelize');
 
 const superagent = require('superagent');
-
-
-// Enable SSL redirect
-app.use(sslRedirect());
 
 app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
