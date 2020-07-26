@@ -16,10 +16,11 @@ const Sequelize = require('sequelize');
 
 const superagent = require('superagent');
 
-app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
-// enable ssl redirect
+// Enable SSL redirect
 app.use(sslRedirect());
+
+app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
