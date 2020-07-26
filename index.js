@@ -43,41 +43,37 @@ const Product = sequelize.define('product', {
         type: Sequelize.INTEGER
     }
 });
-    
-// Customer.belongsTo(Product)
 
+// TODO: Hace falta crear la llave foranea con producto
 Customer.sync()
 
 // DROP TABLE IF EXISTS `products` (force: true)
 Product.sync({force: true}).then(function () {
     
-    // Crea los equipos al iniciar la creación de la tabla
     Product.create({
-        name: 'Papaya maradol'
+        name: 'Papaya maradol',
+        corabastosCode: 204604
     });
 
     Product.create({
-        name: 'Mango Tommy'
+        name: 'Mango Tommy',
+        corabastosCode: 204004
     });
 
     Product.create({
-        name: 'Guanabana'
+        name: 'Guanabana',
+        corabastosCode: 203600
     });
 });
-
-
-//DEBUG
-// result().then(resp => console.log(resp.name))
 
 app.post('/suscribe-product-price', function (req, res) {
     
     var findCustomer = async () => Customer.findOne({ where: { phone: req.body.phone } });
 
     findCustomer().then(resp => {
-        console.log(resp)
 
         if(resp === null) {
-            console.log(req.body.productid)
+
             try {
                 var createCustomer = async () => Customer.create({
                     name: req.body.name,
@@ -91,8 +87,14 @@ app.post('/suscribe-product-price', function (req, res) {
 
                     let price = "";
 
-                    osmosis
-                        .get('https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=204004&d=ok&f=2020-07-25&d=ok&l=')
+                    var findProduct = async () => Product.findOne({ where: { id: req.body.productid } });
+                    
+                    const currentDate = new Date()
+
+                    // TODO: No va a funcionar en Noviembre (Mes 11)
+                    findProduct().then(respFindProduct => {
+                        osmosis
+                        .get(`https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=${respFindProduct.corabastosCode}&d=ok&f=${currentDate.getFullYear()}-0${currentDate.getMonth()}-${currentDate.getDate()}&d=ok&l=`)
                         .find('tbody')
                         .set({'product': ['tr']})
                         .data(function(listing) {
@@ -109,7 +111,7 @@ app.post('/suscribe-product-price', function (req, res) {
                         var splitToPrice = htmlPrice.split("$"); 
                         
                 
-                        requestSms.sms = `Hola ${req.body.name}, el precio de la papaya maradol para hoy es de: ${splitToPrice[1]}`;
+                        requestSms.sms = `Hola ${req.body.name}, el precio de ${respFindProduct.name} para hoy es de: ${splitToPrice[1]}`;
                 
                         try {
                             let sendMessage = superagent
@@ -135,6 +137,7 @@ app.post('/suscribe-product-price', function (req, res) {
                     .debug(
                         // console.log
                     )
+                    })
                 })                
             }
 
@@ -149,6 +152,7 @@ app.post('/suscribe-product-price', function (req, res) {
         }
         else {
 
+            return res.send({success: false, message: 'Solo puedes recibir notificaciones de un producto :D. Espera nuevas noticias de Ziembra!!!'});
         }
     })
 });
