@@ -3,10 +3,10 @@ require('dotenv').config();
 
 var express = require('express');
 var app = express();
-var enforce = require('express-sslify');
+// var enforce = require('express-sslify');
 
 // Enable SSL redirect
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
+// app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 const bodyParser = require('body-parser');
 
@@ -92,10 +92,9 @@ app.post('/suscribe-product-price', function (req, res) {
                     
                     const currentDate = new Date()
 
-                    // TODO: No va a funcionar en Noviembre (Mes 11)
                     findProduct().then(respFindProduct => {
                         osmosis
-                        .get(`https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=${respFindProduct.corabastosCode}&d=ok&f=${currentDate.getFullYear()}-0${currentDate.getMonth()}-${currentDate.getDate()}&d=ok&l=`)
+                        .get(`https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=${respFindProduct.corabastosCode}&d=ok`)
                         .find('tbody')
                         .set({'product': ['tr']})
                         .data(function(listing) {
