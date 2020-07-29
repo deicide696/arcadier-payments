@@ -3,10 +3,10 @@ require('dotenv').config();
 
 var express = require('express');
 var app = express();
-// var enforce = require('express-sslify');
+var enforce = require('express-sslify');
 
 // Enable SSL redirect
-// app.use(enforce.HTTPS({ trustProtoHeader: true }));
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 const bodyParser = require('body-parser');
 
@@ -110,7 +110,6 @@ app.post('/suscribe-product-price', function (req, res) {
                 
                         var splitToPrice = htmlPrice.split("$"); 
                         
-                
                         requestSms.sms = `Hola ${req.body.name}, el precio de ${respFindProduct.name} para hoy es de: ${splitToPrice[1]}`;
                 
                         try {
@@ -120,7 +119,7 @@ app.post('/suscribe-product-price', function (req, res) {
                             .send(requestSms)
                             .end((error, response) => {
                                 
-                                return res.send({success: true, message: 'Recibiras en unos momentos el precio!'});
+                                return res.send({success: true, message: 'Bienvenido a Ziembra, estamos felices de tenerte con nosotros, recibirás el precio de tus productos diariamente!'});
                             });
                         }
                         catch (err) {
