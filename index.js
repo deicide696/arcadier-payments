@@ -49,23 +49,24 @@ const Product = sequelize.define('product', {
 Customer.sync()
 
 // DROP TABLE IF EXISTS `products` (force: true)
-Product.sync({force: true}).then(function () {
+// Product.sync({force: true}).then(function () {
     
-    Product.create({
-        name: 'Papaya maradol',
-        corabastosCode: 204604
-    });
+//     Product.create({
+//         name: 'Papaya maradol',
+//         corabastosCode: 204604
+//     });
 
-    Product.create({
-        name: 'Mango Tommy',
-        corabastosCode: 204004
-    });
+//     Product.create({
+//         name: 'Mango Tommy',
+//         corabastosCode: 204004
+//     });
 
-    Product.create({
-        name: 'Guanabana',
-        corabastosCode: 203600
-    });
-});
+//     Product.create({
+//         name: 'Guanabana',
+//         corabastosCode: 203600
+//     });
+// });
+Product.sync()
 
 app.post('/suscribe-product-price', function (req, res) {
     
