@@ -3,10 +3,6 @@ require('dotenv').config();
 
 var express = require('express');
 var app = express();
-var enforce = require('express-sslify');
-
-// Enable SSL redirect
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 const bodyParser = require('body-parser');
 
