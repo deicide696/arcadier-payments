@@ -38,77 +38,72 @@ const Product = sequelize.define('product', {
     }
 });
 
-Customer.sync()
-Product.sync()
+Customer.sync();
+Product.sync();
 
-var customers = async () => Customer.findAll({
-    where: {
-        productId: 9
+(async () => {
+    try {
+        var customers = await Customer.findAll();        
+
     }
-});
+    catch (e) {
+        console.log(e);
+    }
 
-customers().then(respCustomers => {
+    customers.forEach(async (customer) => {
 
-    console.log(respCustomers);
-
-    for (var i = 0; i < respCustomers.length; i++) {
-
-        var customerName = respCustomers[i].name
-        var customerPhone = respCustomers[i].phone
-        console.log('Name', customerName)
-        console.log('Phone', customerPhone)
-
-        var findProduct = async () => Product.findOne({ where: { id: respCustomers[i].productId } });
+        var customerName = customer.name
+        var customerPhone = customer.phone
         
-        // TODO: No va a funcionar en Octubre (Mes 10)
-        findProduct().then(respFindProduct => {
-            osmosis
-                .get(`https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=${respFindProduct.corabastosCode}&d=ok`)
-                .find('tbody')
-                .set({'product': ['tr']})
-                .data(function(listing) {
-                    
-                    var requestSms = {
-                        'account': 10019189,
-                        'apiKey': 'c1vdJfdQnzfe9rTyLkfmRaJRkMjmmN',
-                        'token': 'b6d67aded0fbccf4888ccf0385ed5aac',
-                        'toNumber': customerPhone,
-                        'sms': null
-                    }
+        var findProduct = await Product.findOne({ where: { id: customer.productId } }); 
+        console.log(findProduct.name)
 
-                    let htmlPrice = listing.product[0];
+        osmosis
+        .get(`https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=${findProduct.corabastosCode}&d=ok`)
+        .find('tbody')
+        .set({'product': ['tr']})
+        .data(function(listing) {
+            
+            var requestSms = {
+                'account': 10019189,
+                'apiKey': 'c1vdJfdQnzfe9rTyLkfmRaJRkMjmmN',
+                'token': 'b6d67aded0fbccf4888ccf0385ed5aac',
+                'toNumber': customerPhone,
+                'sms': null
+            }
 
-                    var splitToPrice = htmlPrice.split("$"); 
-                    
-                    requestSms.sms = `Hola ${customerName}, el precio de ${respFindProduct.name} para hoy es de: ${splitToPrice[1]}`;
+            let htmlPrice = listing.product[0];
 
-                    try {
-                        superagent
-                            .post('https://api101.hablame.co/api/sms/v2.1/send/')
-                            .type('form')
-                            .send(requestSms)
-                            .end((error, response) => {
-                                if(response.status === 202) {
-                                    console.log (`Mensaje enviado al: ${customerPhone}`)
-                                }
-                            });
-                    }
-                    catch (err) {
-                        console.error(err);
-                    }                
-                })
-                .log(
-                    // console.log
-                )
-                .error(
-                    // console.log
-                )
-                .debug(
-                    // console.log
-                )
+            var splitToPrice = htmlPrice.split("$");
+            
+            requestSms.sms = `Ziembra.co ${findProduct.name} Promedio Precio Venta Mayorista Bogotá Calidad Corriente ${customerName}, el precio de ${findProduct.name} para hoy es de: ${splitToPrice[1]}`;
+
+            try {
+                superagent
+                    .post('https://api101.hablame.co/api/sms/v2.1/send/')
+                    .type('form')
+                    .send(requestSms)
+                    .end((error, response) => {
+                        if(response.status === 202) {
+                            console.log (`Mensaje enviado al: ${customerPhone}`)
+                        }
+                    });
+            }
+            catch (err) {
+                console.error(err);
+            }                
         })
-    }
-})
+        .log(
+            // console.log
+        )
+        .error(
+            // console.log
+        )
+        .debug(
+            // console.log
+        )
+    })
+})()
 
 var port = process.env.PORT || 8080;
 
