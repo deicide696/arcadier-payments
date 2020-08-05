@@ -43,25 +43,6 @@ const Product = sequelize.define('product', {
 
 // TODO: Hace falta crear la llave foranea con producto
 Customer.sync()
-
-// DROP TABLE IF EXISTS `products` (force: true)
-// Product.sync({force: true}).then(function () {
-    
-//     Product.create({
-//         name: 'Papaya maradol',
-//         corabastosCode: 204604
-//     });
-
-//     Product.create({
-//         name: 'Mango Tommy',
-//         corabastosCode: 204004
-//     });
-
-//     Product.create({
-//         name: 'Guanabana',
-//         corabastosCode: 203600
-//     });
-// });
 Product.sync()
 
 app.post('/suscribe-product-price', function (req, res) {
@@ -148,7 +129,16 @@ app.post('/suscribe-product-price', function (req, res) {
         }
         else {
 
-            return res.send({success: false, message: 'Solo puedes recibir notificaciones de un producto :D. Espera nuevas noticias de Ziembra!!!'});
+            (async () => {
+                try {
+                    var findProduct = await Product.findOne({ where: { id: req.body.productid } });
+                    
+                    return res.send({success: false, message: `${req.body.name} Ya existe un registro a este número celular con el producto ${findProduct.name}, envíanos un correo a info@ziembra.co para cambiar el producto de interés o incluir productos adicionales.`});
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            })()            
         }
     })
 });
