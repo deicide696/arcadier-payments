@@ -61,7 +61,7 @@ app.post('/suscribe-product-price', function (req, res) {
                 });
                 
                 createCustomer().then(resp => {
-                    console.log(`User added.`)
+                    console.log(`User added.`);
 
                     (async () => {
                         try {

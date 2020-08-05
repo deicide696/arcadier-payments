@@ -76,7 +76,7 @@ Product.sync();
 
             var splitToPrice = htmlPrice.split("$");
             
-            requestSms.sms = `Ziembra.co ${findProduct.name} Promedio Precio Venta Mayorista Bogotá Calidad Corriente ${customerName}, el precio de ${findProduct.name} para hoy es de: ${splitToPrice[1]}`;
+            requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[2]}`;
 
             try {
                 superagent
