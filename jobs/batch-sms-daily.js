@@ -11,6 +11,7 @@ const osmosis = require('osmosis');
 const Sequelize = require('sequelize');
 
 const superagent = require('superagent');
+const { STRING } = require('sequelize');
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
     host: process.env.DB_HOST,
@@ -33,7 +34,19 @@ const Product = sequelize.define('product', {
     name: {
         type: Sequelize.STRING
     },
+    unit: {
+        type: Sequelize.STRING
+    },
     corabastosCode: {
+        type: Sequelize.INTEGER
+    },
+    unitAlternative: {
+        type: Sequelize.STRING
+    },
+    factor: {
+        type: Sequelize.STRING
+    },
+    published: {
         type: Sequelize.INTEGER
     }
 });
@@ -75,8 +88,18 @@ Product.sync();
             let htmlPrice = listing.product[0];
 
             var splitToPrice = htmlPrice.split("$");
+
+            console.log(findProduct);
             
-            requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[2]}`;
+            if(findProduct.unitAlternative === null || findProduct.factor < 1 || findProduct.published == '0') {
+                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[2]}`;
+            }
+            
+            else {
+                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[2]} ${findProduct.unitAlternative} $ ${parseInt(findProduct.factor) * parseInt(splitToPrice[2])}`;
+            }
+
+            console.log(requestSms.sms);
 
             try {
                 superagent
