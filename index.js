@@ -61,60 +61,18 @@ app.post('/suscribe-product-price', function (req, res) {
                 });
                 
                 createCustomer().then(resp => {
-
                     console.log(`User added.`)
 
-                    let price = "";
-
-                    var findProduct = async () => Product.findOne({ where: { id: req.body.productid } });
-                    
-                    const currentDate = new Date()
-
-                    findProduct().then(respFindProduct => {
-                        osmosis
-                        .get(`https://www.corabastos.com.co/sitio/historicoApp2/reportes/historicos.php?c=${respFindProduct.corabastosCode}&d=ok`)
-                        .find('tbody')
-                        .set({'product': ['tr']})
-                        .data(function(listing) {
-                            var requestSms = {
-                                'account': 10019189,
-                                'apiKey': 'c1vdJfdQnzfe9rTyLkfmRaJRkMjmmN',
-                                'token': 'b6d67aded0fbccf4888ccf0385ed5aac',
-                                'toNumber': req.body.phone,
-                                'sms': null
-                        }
-                
-                        let htmlPrice = listing.product[0];
-                
-                        var splitToPrice = htmlPrice.split("$"); 
-                        
-                        requestSms.sms = `Hola ${req.body.name}, el precio de ${respFindProduct.name} para hoy es de: ${splitToPrice[1]}`;
-                
+                    (async () => {
                         try {
-                            let sendMessage = superagent
-                            .post('https://api101.hablame.co/api/sms/v2.1/send/')
-                            .type('form')
-                            .send(requestSms)
-                            .end((error, response) => {
-                                
-                                return res.send({success: true, message: 'Bienvenido a Ziembra, estamos felices de tenerte con nosotros, recibirás el precio de tus productos diariamente!'});
-                            });
+                            var findProduct = await Product.findOne({ where: { id: req.body.productid } });
+                            
+                            return res.send({success: true, message: `Bienvenido a Ziembra. Enviaremos a tu celular información relevante del producto ${findProduct.name.toUpperCase()}. Aplican T&C.`});
                         }
-                        catch (err) {
-                            console.error(err);
+                        catch (e) {
+                            console.log(e);
                         }
-                    
-                    })
-                    .log(
-                        // console.log
-                    )
-                    .error(
-                        // console.log
-                    )
-                    .debug(
-                        // console.log
-                    )
-                    })
+                    })()                    
                 })                
             }
 
