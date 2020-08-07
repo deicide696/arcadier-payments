@@ -88,18 +88,15 @@ Product.sync();
             let htmlPrice = listing.product[0];
 
             var splitToPrice = htmlPrice.split("$");
-
-            console.log(findProduct);
             
             if(findProduct.unitAlternative === null || findProduct.factor < 1 || findProduct.published == '0') {
-                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[2]}`;
+                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3]}`;
             }
             
             else {
-                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[2]} ${findProduct.unitAlternative} $ ${parseInt(findProduct.factor) * parseInt(splitToPrice[2])}`;
+                console.log('Precio por unitAlternative', parseInt(findProduct.factor) * parseInt(splitToPrice[2]))
+                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3]} ${findProduct.unitAlternative} $${findProduct.factor * parseInt(splitToPrice[3].trim().replace(',', ''))}`;
             }
-
-            console.log(requestSms.sms);
 
             try {
                 superagent
