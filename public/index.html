@@ -203,12 +203,12 @@
 							<h2 class="title">Diligencia el formulario</h2>
 							<form class="contact-form" data-pixsaas="call-back-forms" action="/suscribe-product-price" method="POST">
 								<label for="">Nombre</label>
-								<input type="text" name="name" placeholder="Nombre completo">
+								<input type="text" name="name" placeholder="Nombre completo" required>
 								<label for="">Celular</label>
-								<input type="text" name="phone" placeholder="Para recibir SMS">
+								<input type="text" name="phone" placeholder="Para recibir SMS" required>
 								<label for="">Producto de interes</label>								
-								<select name="productid" id="productid" class="pix-select">
-									<option >Elije un producto</option>
+								<select name="productid" id="productid" class="pix-select" required>
+									<option value="">Elije un producto</option>
 									<option value="1">Acelga</option>									
 									<option value="2">Ahuyama</option>
 									<option value="3">Ajo rosado</option>
@@ -349,7 +349,7 @@
 								</select>
 								<div class="forget-link">
 									<div class="condition">
-										<input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1">
+										<input class="styled-checkbox" id="styled-checkbox-1" type="checkbox" value="value1" required>
 										<label for="styled-checkbox-1"></label>
 										<span>Acepto las <a target="_BLANK" href="terms.html">Politicas de tratamiento de datos</a></span>
 									</div>
