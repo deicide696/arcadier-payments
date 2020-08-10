@@ -14,6 +14,10 @@ const superagent = require('superagent');
 
 const { check, validationResult } = require('express-validator');
 
+// require request-ip and register it as middleware
+var requestIp = require('request-ip');
+app.use(requestIp.mw())
+
 app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
@@ -31,6 +35,9 @@ const Customer = sequelize.define('customer', {
     },
     productId: {
         type: Sequelize.INTEGER
+    },
+    ip: {
+        type: Sequelize.STRING
     }
 });
 
@@ -69,7 +76,8 @@ app.post('/suscribe-product-price', [
                 var createCustomer = async () => Customer.create({
                     name: req.body.name,
                     phone: req.body.phone,
-                    productId: req.body.productid                     
+                    productId: req.body.productid,
+                    ip: req.clientIp
                 });
                 
                 createCustomer().then(resp => {
