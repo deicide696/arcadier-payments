@@ -12,6 +12,8 @@ const Sequelize = require('sequelize');
 
 const superagent = require('superagent');
 
+const { check, validationResult } = require('express-validator');
+
 app.use(bodyParser.urlencoded({extended: false})); app.use(express.static((__dirname, 'public')));
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASS, {
@@ -45,7 +47,17 @@ const Product = sequelize.define('product', {
 Customer.sync()
 Product.sync()
 
-app.post('/suscribe-product-price', function (req, res) {
+app.post('/suscribe-product-price', [
+    check('phone').isLength({min: 10, max: 10})
+], function (req, res) {
+    
+    const errors = validationResult(req)
+    
+    // TODO: Aquí se puede hacer una validación más precisa
+    if (!errors.isEmpty()) {
+        // console.log(res.status(422).json({ errors: errors.array() }))    
+        return res.status(422).send({success: false, message: `Error con los campos diligenciados`});
+    }
     
     var findCustomer = async () => Customer.findOne({ where: { phone: req.body.phone } });
 
@@ -89,8 +101,8 @@ app.post('/suscribe-product-price', function (req, res) {
 
             (async () => {
                 try {
-                    var findProduct = await Product.findOne({ where: { id: req.body.productid } });
-                    
+                    var findProduct = await Product.findOne({ where: { id: resp.productId } });
+
                     return res.send({success: false, message: `${req.body.name} Ya existe un registro a este número celular con el producto ${findProduct.name}, envíanos un correo a info@ziembra.co para cambiar el producto de interés o incluir productos adicionales.`});
                 }
                 catch (e) {
