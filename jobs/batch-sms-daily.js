@@ -95,13 +95,14 @@ Product.sync();
             
             else {
                 var majorPrice = findProduct.factor * parseInt(splitToPrice[3].trim().replace(',', ''));
-                // var strMajorPrice = majorPrice.toString()
+                
+                var strMajorPrice = majorPrice.toString()
 
-                // var finalMajorPrice = strMajorPrice.substr(0, strMajorPrice.length - 2) + '00';
+                var finalMajorPrice = strMajorPrice.substr(0, strMajorPrice.length - 2) + '00';
 
-                var roundMajorPrice = Math.round(majorPrice / 100)
+                // var roundMajorPrice = Math.round((majorPrice / 100))
 
-                var finalMajorPrice = roundMajorPrice * 100
+                // var finalMajorPrice = roundMajorPrice * 100
                 
                 requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')} ${findProduct.unitAlternative} $${finalMajorPrice}. Aplican T&C.`;
             }
