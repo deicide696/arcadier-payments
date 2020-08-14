@@ -90,7 +90,7 @@ Product.sync();
             var splitToPrice = htmlPrice.split("$");
             
             if(findProduct.unitAlternative === null || findProduct.factor < 1 || findProduct.published == '0') {
-                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3]}. Aplican T&C.`;
+                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')}. Aplican T&C.`;
             }
             
             else {
@@ -120,7 +120,7 @@ Product.sync();
             }
             catch (err) {
                 console.error(err);
-            }                
+            }
         })
         .log(
             // console.log

@@ -324,10 +324,10 @@ section {
 
 .pix-btn.btn-two {
   border-radius: 30px;
-  background: #f97bc5;
-  -webkit-box-shadow: 0px 20px 30px 0px rgba(235, 110, 183, 0.3);
-          box-shadow: 0px 20px 30px 0px rgba(235, 110, 183, 0.3);
-  border: 1px solid #f97bc5;
+  background: #00f2b2;
+  -webkit-box-shadow: 0px 20px 30px 0px rgba(36, 211, 161, 0.3);
+          box-shadow: 0px 20px 30px 0px rgba(36, 211, 161, 0.3);
+  border: 1px solid #00f2b2;
   font-weight: 500;
   font-size: 16px;
 }
@@ -339,8 +339,8 @@ section {
 
 .pix-btn.btn-two:hover {
   background: transparent;
-  color: #f97bc5;
-  border-color: #f97bc5;
+  color: #003c3c;
+  border-color: #003c3c;
 }
 
 .pix-btn.btn-two.btn-outline {
@@ -12497,8 +12497,8 @@ Download Two
 
 .call-back-forms input,
 .call-back-forms select {
-  background: #f9f5f7;
-  border: 2px solid #f9f5f7;
+  background: #f2fffc;
+  border: 2px solid #f2fffc;
   height: 56px;
   width: 100%;
   border-radius: 30px;
@@ -12508,7 +12508,7 @@ Download Two
 .call-back-forms input:focus,
 .call-back-forms select:focus {
   background: transparent;
-  border-color: #efbbd9;
+  border-color: #00f2b2;
   -webkit-box-shadow: none;
           box-shadow: none;
 }
@@ -14924,11 +14924,11 @@ Download Two
 }
 
 .styled-checkbox:hover + label:before {
-  border-color: #fa7070;
+  border-color: #00f2b2;
 }
 
 .styled-checkbox:checked + label:before {
-  border-color: #fa7070;
+  border-color: #00f2b2;
 }
 
 .styled-checkbox:checked + label:after {
@@ -14936,11 +14936,11 @@ Download Two
   position: absolute;
   left: 3px;
   top: 9px;
-  background: #fa7070;
+  background: #00f2b2;
   width: 2px;
   height: 2px;
-  -webkit-box-shadow: 2px 0 0 #fa7070, 4px 0 0 #fa7070, 4px -2px 0 #fa7070, 4px -4px 0 #fa7070, 4px -6px 0 #fa7070, 4px -8px 0 #fa7070;
-          box-shadow: 2px 0 0 #fa7070, 4px 0 0 #fa7070, 4px -2px 0 #fa7070, 4px -4px 0 #fa7070, 4px -6px 0 #fa7070, 4px -8px 0 #fa7070;
+  -webkit-box-shadow: 2px 0 0 #00f2b2, 4px 0 0 #00f2b2, 4px -2px 0 #00f2b2, 4px -4px 0 #00f2b2, 4px -6px 0 #00f2b2, 4px -8px 0 #00f2b2;
+          box-shadow: 2px 0 0 #00f2b2, 4px 0 0 #00f2b2, 4px -2px 0 #00f2b2, 4px -4px 0 #00f2b2, 4px -6px 0 #00f2b2, 4px -8px 0 #00f2b2;
   -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
           transform: rotate(45deg);
@@ -15125,7 +15125,7 @@ Download Two
   ##  Footer
   --------------------------------------------------------------*/
 #footer {
-  background: #fdf8f8;
+  background: #003c3c;
 }
 
 #footer .footer-inner {
@@ -15133,7 +15133,7 @@ Download Two
 }
 
 #footer .widget.footer-widget .widget-title {
-  color: #2b2350;
+  color: #00f2b2;
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 38px;
@@ -15157,13 +15157,13 @@ Download Two
 
 #footer .footer-menu li a {
   display: block;
-  color: #797687;
+  color: #00f2b2;
   font-weight: 400;
   line-height: 30px;
 }
 
 #footer .footer-menu li a:hover {
-  color: #fa7070;
+  color: #00f2b2;
 }
 
 #footer .footer-logo {
@@ -15231,7 +15231,7 @@ Download Two
   height: 45px;
   width: 45px;
   line-height: 45px;
-  border: 1px solid #e6dbdb;
+  border: 1px solid #00f2b2;
   display: block;
   border-radius: 50%;
   color: #9694a1;
@@ -15240,8 +15240,8 @@ Download Two
 }
 
 #footer .footer-social-link li a:hover {
-  background: #fa7070;
-  border-color: #fa7070;
+  background: #00f2b2;
+  border-color: #00f2b2;
   color: #fff;
   -webkit-box-shadow: 0px 20px 30px 0px rgba(176, 70, 70, 0.3);
           box-shadow: 0px 20px 30px 0px rgba(176, 70, 70, 0.3);
