@@ -140,7 +140,7 @@ app.post('/suscribe-product-price', [
 
                                 var date = new Date()
 
-                                console.log(date.getHours())
+                                console.log('Hora', date.getHours())
 
                                 // TODO: Definir UTC(-5)
                                 if(!(date.getHours() >= 0 & date.getHours() < 15)) {
