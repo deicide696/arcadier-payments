@@ -27,6 +27,12 @@ const Customer = sequelize.define('customer', {
     },
     productId: {
         type: Sequelize.INTEGER
+    },
+    ip: {
+        type: Sequelize.STRING
+    },
+    status: {
+        type: Sequelize.INTEGER
     }
 });
 
@@ -88,38 +94,44 @@ Product.sync();
             let htmlPrice = listing.product[0];
 
             var splitToPrice = htmlPrice.split("$");
-            
-            if(findProduct.unitAlternative === null || findProduct.factor < 1 || findProduct.published == '0') {
-                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')}. Aplican T&C.`;
+
+            if(customer.status == 1) {
+                if(findProduct.unitAlternative === null || findProduct.factor < 1 || findProduct.published == '0') {
+                    requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')}. Aplican T&C.`;
+                }
+                
+                else {
+                    var majorPrice = findProduct.factor * parseInt(splitToPrice[3].trim().replace(',', ''));
+                    
+                    var strMajorPrice = majorPrice.toString()
+    
+                    var finalMajorPrice = strMajorPrice.substr(0, strMajorPrice.length - 2) + '00';
+    
+                    // var roundMajorPrice = Math.round((majorPrice / 100))
+    
+                    // var finalMajorPrice = roundMajorPrice * 100
+                    
+                    requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')} ${findProduct.unitAlternative} $${finalMajorPrice}. Aplican T&C.`;
+                }
+    
+                try {
+                    superagent
+                        .post('https://api101.hablame.co/api/sms/v2.1/send/')
+                        .type('form')
+                        .send(requestSms)
+                        .end((error, response) => {
+                            if(response.status === 202) {
+                                console.log (`Mensaje enviado al: ${customerPhone}`)
+                            }
+                        });
+                }
+                catch (err) {
+                    console.error(err);
+                }
             }
-            
+
             else {
-                var majorPrice = findProduct.factor * parseInt(splitToPrice[3].trim().replace(',', ''));
-                
-                var strMajorPrice = majorPrice.toString()
-
-                var finalMajorPrice = strMajorPrice.substr(0, strMajorPrice.length - 2) + '00';
-
-                // var roundMajorPrice = Math.round((majorPrice / 100))
-
-                // var finalMajorPrice = roundMajorPrice * 100
-                
-                requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')} ${findProduct.unitAlternative} $${finalMajorPrice}. Aplican T&C.`;
-            }
-
-            try {
-                superagent
-                    .post('https://api101.hablame.co/api/sms/v2.1/send/')
-                    .type('form')
-                    .send(requestSms)
-                    .end((error, response) => {
-                        if(response.status === 202) {
-                            console.log (`Mensaje enviado al: ${customerPhone}`)
-                        }
-                    });
-            }
-            catch (err) {
-                console.error(err);
+                console.log(`No se envía SMS a ${customerName}, dado que esta deshabilitado`)
             }
         })
         .log(

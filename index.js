@@ -38,6 +38,9 @@ const Customer = sequelize.define('customer', {
     },
     ip: {
         type: Sequelize.STRING
+    },
+    status: {
+        type: Sequelize.INTEGER
     }
 });
 
