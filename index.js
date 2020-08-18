@@ -143,7 +143,7 @@ app.post('/suscribe-product-price', [
                                 console.log(date.getHours())
 
                                 // TODO: Definir UTC(-5)
-                                if(date.getHours() > 15 || date.getHours() < 24) {
+                                if((!date.getHours() > 0 & date.getHours() < 15)) {
                                     try {
                                         superagent
                                             .post('https://api101.hablame.co/api/sms/v2.1/send/')
