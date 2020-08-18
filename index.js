@@ -138,19 +138,31 @@ app.post('/suscribe-product-price', [
                                     requestSms.sms = `Ziembra.co ${findProduct.name.toUpperCase()} Promedio Precio Venta Mayorista Bogotá Calidad Corriente Kilo ${splitToPrice[3].trim().replace('\t', '')} ${findProduct.unitAlternative} $${finalMajorPrice}. Aplican T&C.`;
                                 }
 
-                                try {
-                                    superagent
-                                        .post('https://api101.hablame.co/api/sms/v2.1/send/')
-                                        .type('form')
-                                        .send(requestSms)
-                                        .end((error, response) => {
-                                            if(response.status === 202) {
-                                                console.log (`Mensaje enviado al: ${req.body.phone}`)
-                                            }
-                                        });
+                                var date = new Date()
+
+                                console.log(date.getHours())
+
+                                // TODO: Definir UTC(-5)
+                                if(date.getHours() > 15 || date.getHours() < 24) {
+                                    try {
+                                        superagent
+                                            .post('https://api101.hablame.co/api/sms/v2.1/send/')
+                                            .type('form')
+                                            .send(requestSms)
+                                            .end((error, response) => {
+                                                if(response.status === 202) {
+                                                    console.log (`Mensaje enviado al: ${req.body.phone}`)
+                                                }
+                                            });
+                                    }
+
+                                    catch (err) {
+                                        console.error(err);
+                                    }
                                 }
-                                catch (err) {
-                                    console.error(err);
+
+                                else {
+                                    console.log('No envía SMS dando que esta entre las 0 y 15 horas en UTC 0')
                                 }
                             })
                             .log(
