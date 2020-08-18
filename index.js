@@ -39,6 +39,9 @@ const Customer = sequelize.define('customer', {
     ip: {
         type: Sequelize.STRING
     },
+    rol: {
+        type: Sequelize.STRING
+    },
     status: {
         type: Sequelize.INTEGER
     }
@@ -92,7 +95,8 @@ app.post('/suscribe-product-price', [
                     name: req.body.name,
                     phone: req.body.phone,
                     productId: req.body.productid,
-                    ip: req.clientIp
+                    ip: req.clientIp,
+                    rol: req.body.rol
                 });
                 
                 createCustomer().then(resp => {

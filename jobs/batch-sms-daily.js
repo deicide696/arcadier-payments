@@ -31,6 +31,9 @@ const Customer = sequelize.define('customer', {
     ip: {
         type: Sequelize.STRING
     },
+    rol: {
+        type: Sequelize.STRING
+    },
     status: {
         type: Sequelize.INTEGER
     }
