@@ -25,60 +25,102 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
     dialect: 'mysql'
 });
 
-// TODO: Pendiente de remover createdAt y updatedAt
-const Customer = sequelize.define('customer', {
-    name: {
+const Transaction = sequelize.define('transaction', {
+    invoice: {
         type: Sequelize.STRING
     },
-    phone: {
+    currency: {
         type: Sequelize.STRING
     },
-    productId: {
-        type: Sequelize.INTEGER
-    },
-    ip: {
+    total: {
         type: Sequelize.STRING
     },
-    rol: {
+    hashkey: {
         type: Sequelize.STRING
     },
-    status: {
-        type: Sequelize.INTEGER
+    gateway: {
+        type: Sequelize.STRING
+    },
+    paykey: {
+        type: Sequelize.STRING
+    } 
+});
+
+Transaction.sync()
+
+app.post('/payu/paykey', function (req, res) {
+
+    let randomKey = Math.random().toString(36).substring(7)
+
+    try {
+        var createTransaction = async () => Transaction.create({
+            invoice: req.body.invoiceno,
+            currency: req.body.currency,
+            total: req.body.total,
+            hashkey: req.body.hashkey,
+            gateway: req.body.gateway,
+            paykey: randomKey
+        });
+        
+        createTransaction().then(resp => {
+            console.log(`Transacition ${randomKey} added.`);
+            
+            return res.status(200).send(randomKey);
+        })                
+    }
+
+    catch (e) {
+
+        if (e.name === 'SequelizeUniqueConstraintError') {
+            console.log('That user already exists.')
+        }
+
+        console.log('Something went wrong with adding a user.');
     }
 });
 
-const Product = sequelize.define('product', {
-    name: {
-        type: Sequelize.STRING
-    },
-    unit: {
-        type: Sequelize.STRING
-    },
-    corabastosCode: {
-        type: Sequelize.INTEGER
-    },
-    unitAlternative: {
-        type: Sequelize.STRING
-    },
-    factor: {
-        type: Sequelize.STRING
-    },
-    published: {
-        type: Sequelize.INTEGER
-    }
-});
+app.post('/payu/web-checkout', function (req, res) {
 
-// TODO: Hace falta crear la llave foranea con producto
-Customer.sync()
-Product.sync()
+    (async() => {
 
-app.post('/payment-method/payu', function (req, res) {
-
-    return res.status(200).send('jR46zZRser');
-
-    console.log(req.body)
-
-    process.exit(0)
+        var request = {
+            merchantId: 508029,
+            ApiKey: '4Vj8eK4rloUd272L48hsrarnUA',
+            referenceCode: 'TestPayU',
+            accountId: '512326',
+            description: 'Test PAYU',
+            amount: 3,
+            tax: 0,
+            taxReturnBase: 0,
+            currency: 'USD',
+            signature: 'ba9ffa71559580175585e45ce70b6c37',
+            test: 1,
+            buyerEmail: 'test@test.com'
+        }
+    
+        let url = 'https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu';
+    
+        console.log(JSON.stringify(request, null, 4));
+    
+        try {
+    
+            let res = await superagent
+                .post(url)
+                // .send(request)
+                // .set('Content-Type', 'application/x-www-form-urlencoded')
+                // .set('x-apikey', '0djTDt98IRzCiHdGMCQP55bhTRYGGPr1')
+                // .set('Content-Transfer-Encoding', 'UTF-8');
+    
+    
+            console.log(JSON.stringify(res.body, null, 4));
+    
+            // socketJoining.emit('data', respuesta);
+        }
+    
+        catch (e) {
+            console.log(e);
+        }
+    })();
 });
 
 var port = process.env.PORT || 8080;
