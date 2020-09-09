@@ -79,7 +79,7 @@ app.post('/payu/paykey', function (req, res) {
     }
 });
 
-app.post('/payu/web-checkout', function (req, res) {
+app.get('/payu/web-checkout', function (req, res) {
 
     (async() => {
 
