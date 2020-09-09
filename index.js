@@ -81,6 +81,8 @@ app.post('/payu/paykey', function (req, res) {
 
 app.get('/payu/web-checkout', function (req, res) {
 
+    console.log('Esta entrando al Webcheckout')
+
     (async() => {
 
         var request = {
