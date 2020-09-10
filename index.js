@@ -114,7 +114,7 @@ app.get('/payu/web-checkout', function (req, res) {
                 // .set('Content-Transfer-Encoding', 'UTF-8');
     
     
-            console.log(JSON.stringify(res.body, null, 4));
+            console.log(JSON.stringify(res.body, null, 4));            
     
             // socketJoining.emit('data', respuesta);
         }
@@ -123,6 +123,8 @@ app.get('/payu/web-checkout', function (req, res) {
             console.log(e);
         }
     })();
+
+    return res.status(200).send('Good Job!');
 });
 
 var port = process.env.PORT || 8080;
