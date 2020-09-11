@@ -80,51 +80,53 @@ app.post('/payu/paykey', function (req, res) {
 });
 
 app.get('/payu/web-checkout', function (req, res) {
+    res.sendFile(__dirname + '/form.html');
+});
 
-    console.log('Esta entrando al Webcheckout');
+app.post('/launch/', function (req, res) {
 
-    (async() => {
+    // (async() => {
 
-        var request = {
-            merchantId: 508029,
-            ApiKey: '4Vj8eK4rloUd272L48hsrarnUA',
-            referenceCode: 'TestPayU',
-            accountId: '512326',
-            description: 'Test PAYU',
-            amount: 3,
-            tax: 0,
-            taxReturnBase: 0,
-            currency: 'USD',
-            signature: 'ba9ffa71559580175585e45ce70b6c37',
-            test: 1,
-            buyerEmail: 'test@test.com'
-        }
+    //     var request = {
+    //         merchantId: 508029,
+    //         ApiKey: '4Vj8eK4rloUd272L48hsrarnUA',
+    //         referenceCode: 'TestPayU',
+    //         accountId: '512326',
+    //         description: 'Test PAYU',
+    //         amount: 3,
+    //         tax: 0,
+    //         taxReturnBase: 0,
+    //         currency: 'USD',
+    //         signature: 'ba9ffa71559580175585e45ce70b6c37',
+    //         test: 1,
+    //         buyerEmail: 'test@test.com'
+    //     }
     
-        let url = 'https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu';
+    //     let url = 'https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu';
     
-        console.log(JSON.stringify(request, null, 4));
+    //     console.log(JSON.stringify(request, null, 4));
     
-        try {
+    //     try {
     
-            let res = await superagent
-                .post(url)
-                // .send(request)
-                // .set('Content-Type', 'application/x-www-form-urlencoded')
-                // .set('x-apikey', '0djTDt98IRzCiHdGMCQP55bhTRYGGPr1')
-                // .set('Content-Transfer-Encoding', 'UTF-8');
+    //         let res = await superagent
+    //             .post(url)
+    //             // .send(request)
+    //             // .set('Content-Type', 'application/x-www-form-urlencoded')
+    //             // .set('x-apikey', '0djTDt98IRzCiHdGMCQP55bhTRYGGPr1')
+    //             // .set('Content-Transfer-Encoding', 'UTF-8');
     
     
-            console.log(JSON.stringify(res.body, null, 4));            
+    //         console.log(JSON.stringify(res.body, null, 4));            
     
-            // socketJoining.emit('data', respuesta);
-        }
+    //         // socketJoining.emit('data', respuesta);
+    //     }
     
-        catch (e) {
-            console.log(e);
-        }
-    })();
+    //     catch (e) {
+    //         console.log(e);
+    //     }
+    // })();
 
-    return res.status(200).send('Good Job!');
+    // return res.status(200).send('Good Job!');
 });
 
 var port = process.env.PORT || 8080;

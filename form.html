@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // const Url = 'https://google.com';
+        // fetch(Url)
+        // .then(data => { 
+        //     e.preventDefault();
+        //     window.location="https://google.com";
+        //  })
+        // .then(res => { console.log(res)})
+
+        const Http = new XMLHttpRequest();
+        // const url='https://jsonplaceholder.typicode.com/posts';
+        const url='https://google.com';
+        Http.open("GET", url);
+        Http.send();
+
+        Http.onreadystatechange = (e) => {
+        // console.log(Http.responseText)
+        window.location = Http.responseText;
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>
