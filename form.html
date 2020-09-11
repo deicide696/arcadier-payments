@@ -1,29 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>
-        // const Url = 'https://google.com';
-        // fetch(Url)
-        // .then(data => { 
-        //     e.preventDefault();
-        //     window.location="https://google.com";
-        //  })
-        // .then(res => { console.log(res)})
-
-        const Http = new XMLHttpRequest();
-        // const url='https://jsonplaceholder.typicode.com/posts';
-        const url='https://google.com';
-        Http.open("GET", url);
-        Http.send();
-
-        Http.onreadystatechange = (e) => {
-        // console.log(Http.responseText)
-        window.location = Http.responseText;
-        }
-    </script>
+    <title>Redireccionando a pago seguro en PayU Latam</title>
+    <meta charset="utf-8">
 </head>
 <body>
+<form id="payu" method="post" action="https://sandbox.checkout.payulatam.com/ppp-web-gateway-payu/">
+    <input name="merchantId"    type="hidden"  value="508029"   >
+    <input name="accountId"     type="hidden"  value="512321" >
+    <input name="description"   type="hidden"  value="Test PAYU"  >
+    <input name="referenceCode" type="hidden"  value="TestPayU" >
+    <input name="amount"        type="hidden"  value="20000"   >
+    <input name="tax"           type="hidden"  value="3193"  >
+    <input name="taxReturnBase" type="hidden"  value="16806" >
+    <input name="currency"      type="hidden"  value="COP" >
+    <input name="signature"     type="hidden"  value="7ee7cf808ce6a39b17481c54f2c57acc"  >
+    <input name="test"          type="hidden"  value="1" >
+    <input name="buyerEmail"    type="hidden"  value="test@test.com" >
+    <input name="responseUrl"    type="hidden"  value="http://www.test.com/response" >
+    <input name="confirmationUrl"    type="hidden"  value="http://www.test.com/confirmation" >
+    <input name="Submit"        type="submit"  value="Enviar" style="display: none;">
+  </form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+    (function($){
+        $('#payu').submit();
+    })(jQuery);
+</script>
 </body>
 </html>
