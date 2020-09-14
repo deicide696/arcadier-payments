@@ -86,6 +86,13 @@ app.get('/payu/web-checkout', function (req, res) {
     res.sendFile(__dirname + '/form.html');
 });
 
+app.get('/transfer/web-checkout', function (req, res) {
+
+    // let invoice = req.query.invoiceno
+
+    res.sendFile(__dirname + '/form-transfer.html');
+});
+
 app.post('/launch/', function (req, res) {
 
     // (async() => {
