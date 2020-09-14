@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redireccionando a pago seguro en Wompi</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <form id="wompi" action="https://checkout.wompi.co/p/" method="GET" style="display: none;">
+        <!-- OBLIGATORIOS -->
+        <input type="hidden" name="public-key" value="pub_test_1Aj3Or5eJkfAjAzZSJhia5BFMLj1hRu4" />
+        <input type="hidden" name="currency" value="COP" />
+        <input type="hidden" name="amount-in-cents" value="1676000" />
+        <input type="hidden" name="reference" value="ZIEMBRA16000861159SY3" />
+        <!-- OPCIONALES -->
+        <input type="hidden" name="redirect-url" value="https://www.ziembra.co" />
+        <button type="submit">Pagar con Wompi</button>
+    </form>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        (function($){
+            $('#wompi').submit();
+        })(jQuery);
+    </script>
+</body>
+</html>
