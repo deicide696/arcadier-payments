@@ -80,6 +80,9 @@ app.post('/payu/paykey', function (req, res) {
 });
 
 app.get('/payu/web-checkout', function (req, res) {
+
+    // let invoice = req.query.invoiceno
+
     res.sendFile(__dirname + '/form.html');
 });
 
