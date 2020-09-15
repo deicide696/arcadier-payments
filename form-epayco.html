@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Redireccionando a pago seguro en ePayco</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <form id="epayco" style="display: none;">
+        <script
+            src="https://checkout.epayco.co/checkout.js"
+            class="epayco-button"
+            data-epayco-key="40f67d000a890bbf2b3c40e2fec47560"
+            data-epayco-amount="16750"
+            data-epayco-name="ZIEMBRA1600091465PKIQ"
+            data-epayco-description="Lechuga Pinilla"
+            data-epayco-currency="cop"
+            data-epayco-country="co"
+            data-epayco-test="true"
+            data-epayco-external="true"
+            data-epayco-response="https://ejemplo.com/respuesta.html"
+            data-epayco-confirmation="https://ejemplo.com/confirmacion">
+        </script>
+    </form>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+        (function($){
+            document.getElementsByClassName('epayco-button-render')[0].click();
+        })(jQuery);
+    </script>
+</body>
+</html>

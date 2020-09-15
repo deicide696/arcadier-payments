@@ -83,7 +83,7 @@ app.get('/payu/web-checkout', function (req, res) {
 
     // let invoice = req.query.invoiceno
 
-    res.sendFile(__dirname + '/form.html');
+    res.sendFile(__dirname + '/form-payu.html');
 });
 
 app.get('/transfer/web-checkout', function (req, res) {
@@ -98,6 +98,13 @@ app.get('/wompi/web-checkout', function (req, res) {
     // let invoice = req.query.invoiceno
 
     res.sendFile(__dirname + '/form-wompi.html');
+});
+
+app.get('/epayco/web-checkout', function (req, res) {
+
+    // let invoice = req.query.invoiceno
+
+    res.sendFile(__dirname + '/form-epayco.html');
 });
 
 app.post('/launch/', function (req, res) {
