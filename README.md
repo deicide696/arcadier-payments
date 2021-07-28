@@ -1,2 +1,2 @@
-# Arcadier Payments for Colombia (PayU, ePayco and Wompi)
-Automatic redirect to workflow in arcadier payments
+# Arcadier Payments for Colombia
+Automatic redirect to workflow in arcadier payments (PayU, ePayco and Wompi)
